@@ -21,21 +21,21 @@ ISR(USART_RX_vect){
    }
 }
 
-//Inicialización del módulo USART AVR modo asíncrono
+//InicializaciÃ³n del mÃ³dulo USART AVR modo asÃ­ncrono
 //RHANDALL VALDEZ - P102
 void serial_begin(){
 	cli();
 	float valor_UBBR0 = 0;
 	UCSR0A=0b00000010;	//Bit 1 (U2X0) se pone en uno para duplicar la velocidad y poder utilizar frecuencias desde 1MHz.
-	UCSR0B=0b10011000;	//Habilitar interrupcion por recepción / transmisión y recepción habilitados a 8 bits.
-	UCSR0C=0b00000110;	//Así­ncrono, sin bit de paridad, 1 bit de parada a 8 bits.
+	UCSR0B=0b10011000;	//Habilitar interrupcion por recepciÃ³n / transmisiÃ³n y recepciÃ³n habilitados a 8 bits.
+	UCSR0C=0b00000110;	//AsÃ­Â­ncrono, sin bit de paridad, 1 bit de parada a 8 bits.
 	valor_UBBR0 = F_CPU/(16.0*BAUD);	
         if(UCSR0A & (1<<U2X0)) valor_UBBR0 *= 2;
 	UBRR0=valor_UBBR0 - 1;
         sei();
 }
 
-//Recepción de datos 
+//RecepciÃ³n de datos 
 unsigned char serial_read_char(){
 	if(UCSR0A&(1<<7)){  //Si el bit7 del registro UCSR0A se ha puesto a 1.
 		return UDR0;    //Devuelve el dato almacenado en el registro UDR0.
@@ -56,15 +56,15 @@ bool is_data_ready(){//informaci'on lista para recibir
 
 void serial_print_char(unsigned char caracter){
         if(caracter==0) return;
-	while(!(UCSR0A&(1<<5)));    // mientras el registro UDR0 esté lleno espera
-	UDR0 = caracter;            //cuando el el registro UDR0 está vacio se envia el caracter
+	while(!(UCSR0A&(1<<5)));    // mientras el registro UDR0 estÃ© lleno espera
+	UDR0 = caracter;            //cuando el el registro UDR0 estÃ¡ vacio se envia el caracter
 }
 
 void serial_print_str(char *cadena){	//cadena de caracteres de tipo char
-	while(*cadena !=0x00){			//mientras el último valor de la cadena sea diferente
+	while(*cadena !=0x00){			//mientras el Ãºltimo valor de la cadena sea diferente
 							        //al caracter nulo
 		serial_print_char(*cadena);	//transmite los caracteres de cadena
-		cadena++;				//incrementa la ubicación de los caracteres en cadena
+		cadena++;				//incrementa la ubicaciÃ³n de los caracteres en cadena
 								//para enviar el siguiente caracter de cadena
 	}
 }
