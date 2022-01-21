@@ -1,9 +1,9 @@
 #include "funciones.h" 
 //RHANDALL VALDEZ - P102
 //Modos a manejarse: Registro y acceso
-//Desde Raspberry se mandan 2 n鷐eros hacia el ATMega en formato "xy"
-// x representa el modo de operaci髇: 1 es registro y 2 es acceso
-// y representa el estado de la operaci髇 previamente realizada asociada al modo
+//Desde Raspberry se mandan 2 n煤meros hacia el ATMega en formato "xy"
+// x representa el modo de operaci贸n: 1 es registro y 2 es acceso
+// y representa el estado de la operaci贸n previamente realizada asociada al modo
 // si y es 1 representa registro exitoso o acceso concedido
 // si y es 0 representa registro fallido o acceso denegado
 char *codigoTarjeta = "";
@@ -12,10 +12,10 @@ char *instruccionesRaspberry = "";
 char *comandos = "";
  
 void configuracionesIniciales(){
-   //Configuraci髇 de puertos.
+   //Configuraci贸n de puertos.
    DDRC = 0b00011111;
-   //Configuraci髇 comunicaci髇 serial con Raspberry.   
-   //Configuraci髇 para lectura de c骴igo.
+   //Configuraci贸n comunicaci贸n serial con Raspberry.   
+   //Configuraci贸n para lectura de c贸digo.
    serial_begin(); 
 }
 
@@ -49,15 +49,15 @@ void recibirComandosAccionarSalidas(char* comando){
 void enviarComandosARaspberry (){
    //Leyendo estado de switch: presionado 1 - registro, sin presionar 0 - acceso.
    if(PINC & (1<<PC5)){ //Registro - 1
-      //Receptar primero identificaci髇 de administrador, luego tiempo de espera y luego se
-      // recepta identificaci髇 nueva a ingresar.
-      //Se env韆 c骴igo de registro a Raspberry -0-, identificador administrador e identificador nuevo.
-      //SE QUEMAN VALORES POR LIMITACIONES DE SIMULACI覰.
+      //Receptar primero identificaci贸n de administrador, luego tiempo de espera y luego se
+      // recepta identificaci贸n nueva a ingresar.
+      //Se env铆a c贸digo de registro a Raspberry -0-, identificador administrador e identificador nuevo.
+      //SE QUEMAN VALORES POR LIMITACIONES DE SIMULACI脫N.
       PORTC |= (1<<PC1);
       instruccionesRaspberry = "1,QWERTY,RHAN";
       _delay_ms(3000);
       PORTC &= ~(1<<PC1);
-     //C覦IGO ABAJO SE IMPLEMENTA EN PROTOTIPO, MAS NO EN SIMULACI覰
+     //C脫DIGO ABAJO SE IMPLEMENTA EN PROTOTIPO, MAS NO EN SIMULACI脫N
       /* while(!(is_data_ready())){} //Si no se lee alguna tarjeta se espera.Lectura tarjeta profesor.
       codigoTarjeta = get_RX_buffer();
       _delay_ms(250);
@@ -69,11 +69,11 @@ void enviarComandosARaspberry (){
       strcat(instruccionesRaspberry, ",");*/
    }
    else{//Acceso - 0
-      //Receptar identificaci髇 a verificar acceso.
-      //Se env韆 c骴igo de acceso a Raspberry -1- e identificador le韉o.
-      //SE QUEMAN VALORES POR LIMITACIONES DE SIMULACI覰.
+      //Receptar identificaci贸n a verificar acceso.
+      //Se env铆a c贸digo de acceso a Raspberry -1- e identificador le铆do.
+      //SE QUEMAN VALORES POR LIMITACIONES DE SIMULACI脫N.
       instruccionesRaspberry = "0,PRUEBA1,";
-      //C覦IGO ABAJO SE IMPLEMENTA EN PROTOTIPO, MAS NO EN SIMULACI覰
+      //C脫DIGO ABAJO SE IMPLEMENTA EN PROTOTIPO, MAS NO EN SIMULACI脫N
       /*while(!(is_data_ready())){} //Si no se lee alguna tarjeta se espera.Lectura tarjeta profesor.
       codigoTarjeta = get_RX_buffer();
       _delay_ms(250);
